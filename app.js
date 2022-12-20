@@ -1,10 +1,11 @@
 const express = require("express");
 const http = require("http");
-// const socketIo = require("socket.io");
 
 const port = process.env.PORT || 3001;
 const indexRoute = require("./routes/index");
 const StockRoute = require("./routes/stock");
+const ReviewRoute = require("./routes/review");
+const NewsletterRoute = require("./routes/email");
 
 const app = express();
 const cors = require("cors");
@@ -19,27 +20,8 @@ app.use((req, res, next) => {
 
 app.use('/' ,  indexRoute);
 app.use('/stock/' ,  StockRoute);
-// const io = socketIo(server);
-
-// let interval;
-
-// io.on("connection", (socket) => {
-//   console.log("New client connected");
-//   if (interval) {
-//     clearInterval(interval);
-//   }
-//   interval = setInterval(() => getApiAndEmit(socket), 1000);
-//   socket.on("disconnect", () => {
-//     console.log("Client disconnected");
-//     clearInterval(interval);
-//   });
-// });
-
-// const getApiAndEmit = socket => {
-//   const response = new Date();
-//   // Emitting a new message. Will be consumed by the client
-//   socket.emit("FromAPI", response);
-// };
+app.use('/review' ,  ReviewRoute);
+app.use('/newsletter' ,  NewsletterRoute);
 
 const server = http.createServer(app);
 server.listen(port, () => console.log(`Listening on port ${port}`));
