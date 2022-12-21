@@ -6,6 +6,7 @@ const indexRoute = require("./routes/index");
 const StockRoute = require("./routes/stock");
 const ReviewRoute = require("./routes/review");
 const NewsletterRoute = require("./routes/email");
+const UserRoute = require("./routes/users");
 
 const app = express();
 const cors = require("cors");
@@ -22,6 +23,7 @@ app.use('/' ,  indexRoute);
 app.use('/stock/' ,  StockRoute);
 app.use('/review' ,  ReviewRoute);
 app.use('/newsletter' ,  NewsletterRoute);
+app.use('/user' ,  UserRoute);
 
 const server = http.createServer(app);
 server.listen(port, () => console.log(`Listening on port ${port}`));
