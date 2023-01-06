@@ -8,6 +8,7 @@ const ReviewRoute = require("./routes/review");
 const NewsletterRoute = require("./routes/email");
 const UserRoute = require("./routes/users");
 const FollowRoute = require("./routes/follow");
+const StripeRoute = require("./routes/stripe");
 
 const app = express();
 const cors = require("cors");
@@ -26,6 +27,7 @@ app.use('/review' ,  ReviewRoute);
 app.use('/newsletter' ,  NewsletterRoute);
 app.use('/user' ,  UserRoute);
 app.use('/follow' ,  FollowRoute);
+app.use('/stripe' ,  StripeRoute);
 
 const server = http.createServer(app);
 server.listen(port, () => console.log(`Listening on port ${port}`));

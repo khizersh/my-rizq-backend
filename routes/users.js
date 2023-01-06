@@ -63,6 +63,59 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+
+router.post("/delete", async (req, res) => {
+  let body = req.body;
+  let path = "../backend/csv/user.csv";
+
+  try {
+    // read old data
+    let inputStream = Fs.createReadStream(path, "utf8");
+
+    let i = 0;
+    let oldData = [];
+    inputStream
+      .pipe(
+        new CsvReadableStream({
+          parseNumbers: true,
+          parseBooleans: true,
+          trim: true,
+        })
+      )
+      .on("data", function (row) {
+        if (i != 0) {
+          let obj = {
+            name: row[0],
+            email: row[1],
+            password: row[2],
+          };
+          oldData.push(obj);
+        }
+        i++;
+      })
+      .on("end", function () {
+        const csvWriter = createCsvWriter({
+          path: path,
+          header: [
+            { id: "name", title: "Name" },
+            { id: "email", title: "Email" },
+            { id: "password", title: "Password" },
+          ],
+        });
+
+        let removedUserList = oldData.filter((m) => m.email != body[0].email);
+        csvWriter
+          .writeRecords(removedUserList) // returns a promise
+          .then(() => {
+            res.send({ status: 0000, message: "success" }).status(200);
+          });
+      });
+  } catch (error) {
+    console.log("error : ", error.message);
+    res.send({ status: 9999, message: "Something went wrong!" }).status(200);
+  }
+});
+
 router.post("/signin", async (req, res) => {
   let body = req.body;
   let path = "../backend/csv/user.csv";
