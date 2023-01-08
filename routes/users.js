@@ -40,6 +40,7 @@ router.post("/signup", async (req, res) => {
             { id: "name", title: "Name" },
             { id: "email", title: "Email" },
             { id: "password", title: "Password" },
+            { id: "freeUser", title: "Free User" },
           ],
         });
 
@@ -100,6 +101,7 @@ router.post("/delete", async (req, res) => {
             { id: "name", title: "Name" },
             { id: "email", title: "Email" },
             { id: "password", title: "Password" },
+            { id: "freeUser", title: "Free User" },
           ],
         });
 
@@ -140,6 +142,7 @@ router.post("/signin", async (req, res) => {
             name: row[0],
             email: row[1],
             password: row[2],
+            freeUser:row[3] ? row[3] : true
           };
           oldData.push(obj);
         }
@@ -150,7 +153,8 @@ router.post("/signin", async (req, res) => {
           (m) => m.email == body.email && m.password == body.password
         );
         if (isExistEmail) {
-          res.send({ status: "0000", message: "Successfully login!" }).status(200);
+          console.log("isExistEmail : ",isExistEmail);
+          res.send({ status: "0000", message: "Successfully login!" , data : isExistEmail }).status(200);
         } else {
           res
             .send({ status: "9999", message: "Invalid credentials!" })

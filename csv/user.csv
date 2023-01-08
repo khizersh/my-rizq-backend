@@ -1,9 +1,13 @@
-Name,Email,Password
-khizer,khizer@gmail.com,khizer123
-khizer,abc@gmail.com,abc
-khizer,abc1@gmail.com,abc
-khizer,abc2@gmail.com,abc
-khizer,abc3@gmail.com,abc
-test,test123@gmail.com,test123@gmail.com
-test,t123,t123
-test,test124@gmail.com,test124@gmail.com
+Name,Email,Password,Free User
+khizer,khizer@gmail.com,khizer123,
+khizer,abc@gmail.com,abc,
+khizer,abc1@gmail.com,abc,
+khizer,abc2@gmail.com,abc,
+khizer,abc3@gmail.com,abc,
+test,test123@gmail.com,test123@gmail.com,
+test,t123,t123,
+test,test124@gmail.com,test124@gmail.com,
+new user,newuser@gmail.com,newuser@gmail.com,
+far,far@gmail.com,far@gmail.com,
+far,far1@gmail.com,far1@gmail.com,
+test 1,test1@gmail.com,test1@gmail.com,true
