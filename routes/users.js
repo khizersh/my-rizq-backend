@@ -139,12 +139,13 @@ router.post("/signin", async (req, res) => {
         })
       )
       .on("data", function (row) {
+        let freeUser = (row[3] != null && row[3] != undefined) ? row[3] : true ;
         if (i != 0) {
           let obj = {
             name: row[0],
             email: row[1],
             password: row[2],
-            freeUser:row[3]
+            freeUser: freeUser
           };
           oldData.push(obj);
         }
