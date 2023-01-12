@@ -12,7 +12,6 @@
   "dependencies": {
     "csv-reader": "^1.0.10",
     "express": "^4.17.2",
-    "socket.io": "^4.4.1",
     "stripe": "^11.5.0"
   }
 }
