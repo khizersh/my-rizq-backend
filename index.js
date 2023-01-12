@@ -20,6 +20,9 @@ app.use((req, res, next) => {
   next();
 }) 
 
+app.get('/' , (req, res) =>{
+  res.send("HEllo")
+})
 
 app.use('/' ,  indexRoute);
 app.use('/stock/' ,  StockRoute);
@@ -29,5 +32,5 @@ app.use('/user' ,  UserRoute);
 app.use('/follow' ,  FollowRoute);
 app.use('/stripe' ,  StripeRoute);
 
-const server = http.createServer(app);
-server.listen(port, () => console.log(`Listening on port ${port}`));
+// const server = http.createServer(app);
+app.listen(port, () => console.log(`Listening on port ${port}`));
