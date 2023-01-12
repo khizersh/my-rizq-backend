@@ -5,9 +5,12 @@ const Fs = require("fs");
 const CsvReadableStream = require("csv-reader");
 var yahooFinance = require("yahoo-finance");
 
+
+const path = "./csv/follow.csv";
+
 router.post("/save", async (req, res) => {
   let body = req.body;
-  let path = "../backend/csv/follow.csv";
+  // let path = "../backend/csv/follow.csv";
 
   try {
     // read old data
@@ -56,7 +59,7 @@ router.post("/save", async (req, res) => {
 
 router.post("/get-symbols", async (req, res) => {
   let body = req.body;
-  let path = "../backend/csv/follow.csv";
+  // let path = "../backend/csv/follow.csv";
 
   try {
     // read old data

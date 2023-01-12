@@ -4,9 +4,12 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const Fs = require("fs");
 const CsvReadableStream = require("csv-reader");
 
+const path = "./csv/newsletter.csv";
+
+
 router.post("/", async (req, res) => {
   let body = req.body;
-  let path = "../backend/csv/newsletter.csv";
+  // let path = "../backend/csv/newsletter.csv";
 
   try {
     // read old data

@@ -4,10 +4,13 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const Fs = require("fs");
 const CsvReadableStream = require("csv-reader");
 
+
+const path = "./csv/feedback.csv";
+
 router.post("/", async (req, res) => {
   let body = req.body;
   let path = "../backend/csv/feedback.csv";
-
+// 
   try {
     // read old data
     let inputStream = Fs.createReadStream(path, "utf8");
@@ -60,7 +63,7 @@ router.post("/", async (req, res) => {
 
 router.post("/read", async (req, res) => {
   let body = req.body;
-  let path = "../backend/csv/feedback.csv";
+  // let path = "../backend/csv/feedback.csv";
 
   try {
     // read old data

@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
 
-const port = process.env.PORT || 3001;
+const port = 3001;
 const indexRoute = require("./routes/index");
 const StockRoute = require("./routes/stock");
 const ReviewRoute = require("./routes/review");
@@ -12,6 +12,11 @@ const StripeRoute = require("./routes/stripe");
 
 const app = express();
 const cors = require("cors");
+
+app.get("/" , (req , res) => {
+res.send("Express app working")
+})
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -20,9 +25,6 @@ app.use((req, res, next) => {
   next();
 }) 
 
-app.get('/' , (req, res) =>{
-  res.send("HEllo")
-})
 
 app.use('/' ,  indexRoute);
 app.use('/stock/' ,  StockRoute);
