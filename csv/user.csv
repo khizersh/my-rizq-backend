@@ -1,5 +1,3 @@
 Name,Email,Password,Free User
-khizer,khizer@gmail.com,khizer123,
-free,free,free,
-paid,paid,paid,true
-paid1,paid1,paid1,false
+free,free,free,true
+paid,paid,paid,false
