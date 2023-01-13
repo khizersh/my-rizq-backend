@@ -7,6 +7,26 @@ const CsvReadableStream = require("csv-reader");
 
 const path = "./csv/user.csv"
 
+router.post("/createFile", async (req, res) => { 
+
+  const csvWriter = createCsvWriter({
+      path: path,
+      header: [
+        { id: "name", title: "Name" },
+        { id: "email", title: "Email" },
+        { id: "password", title: "Password" },
+        { id: "freeUser", title: "Free User" },
+      ],
+    });
+
+    csvWriter
+    .writeRecords([]) // returns a promise
+    .then(() => {
+      res.send({ status: 0000, message: "success" }).status(200);
+    });
+
+})
+
 router.post("/signup", async (req, res) => {
   let body = req.body;
   // let path = "../backend/csv/user.csv";

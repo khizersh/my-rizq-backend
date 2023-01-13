@@ -7,9 +7,30 @@ const CsvReadableStream = require("csv-reader");
 
 const path = "./csv/feedback.csv";
 
+
+router.post("/createFile", async (req, res) => { 
+
+  const csvWriter = createCsvWriter({
+      path: path,
+      header: [
+        { id: "thoughts", title: "Thoughts" },
+        { id: "review", title: "Review" },
+        { id: "likeCount", title: "Like Count" },
+        { id: "reviewCount", title: "Review Count" },
+      ],
+    });
+
+    csvWriter
+    .writeRecords([]) // returns a promise
+    .then(() => {
+      res.send({ status: 0000, message: "success" }).status(200);
+    });
+
+})
+
 router.post("/", async (req, res) => {
   let body = req.body;
-  let path = "../backend/csv/feedback.csv";
+
 // 
   try {
     // read old data
@@ -80,7 +101,6 @@ router.post("/read", async (req, res) => {
         })
       )
       .on("data", function (row ) {
-        console.log("row : ",row);
         if(i != 0){
           let obj = {
             thoughts : row[0],
@@ -93,7 +113,6 @@ router.post("/read", async (req, res) => {
         i++;
       })
       .on("end", function () {
-        console.log("oldData : ",oldData);
         res.send({ status: 0000, data: oldData}).status(200);
       });
 

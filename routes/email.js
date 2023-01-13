@@ -7,6 +7,21 @@ const CsvReadableStream = require("csv-reader");
 const path = "./csv/newsletter.csv";
 
 
+router.post("/createFile", async (req, res) => { 
+
+  const csvWriter = createCsvWriter({
+      path: path,
+      header: [{ id: "email", title: "Email" }],
+    });
+
+    csvWriter
+    .writeRecords([]) // returns a promise
+    .then(() => {
+      res.send({ status: 0000, message: "success" }).status(200);
+    });
+
+})
+
 router.post("/", async (req, res) => {
   let body = req.body;
   // let path = "../backend/csv/newsletter.csv";

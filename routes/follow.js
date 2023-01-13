@@ -8,6 +8,24 @@ var yahooFinance = require("yahoo-finance");
 
 const path = "./csv/follow.csv";
 
+router.post("/createFile", async (req, res) => { 
+
+  const csvWriter = createCsvWriter({
+      path: path,
+      header: [
+        { id: "email", title: "Email" },
+        { id: "symbol", title: "Symbol" },
+      ],
+    });
+
+    csvWriter
+    .writeRecords([]) // returns a promise
+    .then(() => {
+      res.send({ status: 0000, message: "success" }).status(200);
+    });
+
+})
+
 router.post("/save", async (req, res) => {
   let body = req.body;
   // let path = "../backend/csv/follow.csv";
