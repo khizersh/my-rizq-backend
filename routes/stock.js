@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
     if(symbol){
         yahooFinance.quote({
           symbol: symbol,
-          modules: [  'financialData' , 'summaryDetail' , 'price' ] // see the docs for the full list
+          modules: [  'financialData' , 'summaryDetail' , 'price' , 'summaryProfile' ] // see the docs for the full list
         }, function (err, quotes) {
           data = quotes;
           res.send({ response: data }).status(200);
