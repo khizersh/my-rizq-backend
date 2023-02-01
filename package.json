@@ -19,6 +19,7 @@
     "fs": "^0.0.1-security",
     "fs-extra": "^11.1.0",
     "stripe": "^11.5.0",
-    "yahoo-finance": "^0.3.8"
+    "yahoo-finance": "^0.3.8",
+    "yahoo-finance2": "^2.3.10"
   }
 }
