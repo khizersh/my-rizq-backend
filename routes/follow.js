@@ -4,71 +4,72 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const Fs = require("fs");
 const CsvReadableStream = require("csv-reader");
 var yahooFinance = require("yahoo-finance");
-
+const FollowModel = require("../models/FollowSchema");
 
 const path = "./csv/follow.csv";
 
-router.post("/createFile", async (req, res) => { 
-
+router.post("/createFile", async (req, res) => {
   const csvWriter = createCsvWriter({
-      path: path,
-      header: [
-        { id: "email", title: "Email" },
-        { id: "symbol", title: "Symbol" },
-      ],
-    });
+    path: path,
+    header: [
+      { id: "email", title: "Email" },
+      { id: "symbol", title: "Symbol" },
+    ],
+  });
 
-    csvWriter
+  csvWriter
     .writeRecords([]) // returns a promise
     .then(() => {
       res.send({ status: 0000, message: "success" }).status(200);
     });
-
-})
+});
 
 router.post("/save", async (req, res) => {
   let body = req.body;
   // let path = "../backend/csv/follow.csv";
+  const follow = new FollowModel(req.body[0]);
 
   try {
+    await follow.save();
+    res.send({ status: 0000, message: "success" }).status(200);
     // read old data
-    let inputStream = Fs.createReadStream(path, "utf8");
+    // let inputStream = Fs.createReadStream(path, "utf8");
 
-    let i = 0;
-    let oldData = [];
-    inputStream
-      .pipe(
-        new CsvReadableStream({
-          parseNumbers: true,
-          parseBooleans: true,
-          trim: true,
-        })
-      )
-      .on("data", function (row) {
-        if (i != 0) {
-          let obj = {
-            email: row[0],
-            symbol: row[1],
-          };
-          oldData.push(obj);
-        }
-        i++;
-      })
-      .on("end", function () {
-        const csvWriter = createCsvWriter({
-          path: path,
-          header: [
-            { id: "email", title: "Email" },
-            { id: "symbol", title: "Symbol" },
-          ],
-        });
-        oldData.push(body[0]);
-        csvWriter
-          .writeRecords(oldData) // returns a promise
-          .then(() => {
-            res.send({ status: 0000, message: "success" }).status(200);
-          });
-      });
+    // let i = 0;
+    // let oldData = [];
+    // inputStream
+    //   .pipe(
+    //     new CsvReadableStream({
+    //       parseNumbers: true,
+    //       parseBooleans: true,
+    //       trim: true,
+    //     })
+    //   )
+    //   .on("data", function (row) {
+    //     if (i != 0) {
+    //       let obj = {
+    //         email: row[0],
+    //         symbol: row[1],
+    //       };
+    //       oldData.push(obj);
+    //     }
+    //     i++;
+    //   })
+    //   .on("end", function () {
+    //     const csvWriter = createCsvWriter({
+    //       path: path,
+    //       header: [
+    //         { id: "email", title: "Email" },
+    //         { id: "symbol", title: "Symbol" },
+    //       ],
+    //     });
+    //     oldData.push(body[0]);
+    //     csvWriter
+    //       .writeRecords(oldData) // returns a promise
+    //       .then(() => {
+    //         res.send({ status: 0000, message: "success" }).status(200);
+    //       });
+    //   });
   } catch (error) {
     console.log("error : ", error.message);
     res.send({ status: 9999, message: "Something went wrong!" }).status(200);
@@ -79,37 +80,41 @@ router.post("/get-symbols", async (req, res) => {
   let body = req.body;
   // let path = "../backend/csv/follow.csv";
 
-  try {
-    // read old data
-    let inputStream = Fs.createReadStream(path, "utf8");
+  const follow = await FollowModel(req.body);
 
-    let i = 0;
-    let oldData = [];
-    inputStream
-      .pipe(
-        new CsvReadableStream({
-          parseNumbers: true,
-          parseBooleans: true,
-          trim: true,
-        })
-      )
-      .on("data", function (row) {
-        if (i != 0) {
-          let obj = {
-            email: row[0],
-            symbol: row[1],
-          };
-          oldData.push(obj);
-        }
-        i++;
-      })
-      .on("end", async () => {
-        let emails = oldData.filter((email) => email.email == body.email);
-        // const data = await yahooFinance.quote('TSLA' , ["financialData", "summaryDetail", "price"])
-        res
-          .send({ status: 0000, message: "success", data: emails })
-          .status(200);
-      });
+  try {
+    const emails = await FollowModel.find({ email: follow.email });
+    res.send({ status: 0000, message: "success", data: emails }).status(200);
+    // read old data
+    // let inputStream = Fs.createReadStream(path, "utf8");
+
+    // let i = 0;
+    // let oldData = [];
+    // inputStream
+    //   .pipe(
+    //     new CsvReadableStream({
+    //       parseNumbers: true,
+    //       parseBooleans: true,
+    //       trim: true,
+    //     })
+    //   )
+    //   .on("data", function (row) {
+    //     if (i != 0) {
+    //       let obj = {
+    //         email: row[0],
+    //         symbol: row[1],
+    //       };
+    //       oldData.push(obj);
+    //     }
+    //     i++;
+    //   })
+    //   .on("end", async () => {
+    //     let emails = oldData.filter((email) => email.email == body.email);
+    //     // const data = await yahooFinance.quote('TSLA' , ["financialData", "summaryDetail", "price"])
+    //     res
+    //       .send({ status: 0000, message: "success", data: emails })
+    //       .status(200);
+    //   });
   } catch (error) {
     console.log("error : ", error.message);
     res.send({ status: 9999, message: "Something went wrong!" }).status(200);
@@ -151,7 +156,7 @@ router.post("/get-data", async (req, res) => {
       marketCap: data.summaryDetail.marketCap,
       debtLevel: data.financialData.totalDebt,
     };
-    res.send({ status: 0000, message: "success" , data : finalObj }).status(200);
+    res.send({ status: 0000, message: "success", data: finalObj }).status(200);
   } catch (error) {
     res.send({ status: 9999, message: "Something went wrong!" }).status(200);
   }
@@ -190,9 +195,7 @@ const prom = async (emails) => {
       marketCap: data.summaryDetail.marketCap,
       dept: data.financialData.totalDebt,
     };
-    res
-          .send({ status: 0000, message: "success", data: finalObj })
-          .status(200);
+    res.send({ status: 0000, message: "success", data: finalObj }).status(200);
   });
 
   console.log("finalData : ", finalData);
