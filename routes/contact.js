@@ -4,7 +4,6 @@ const ContactModel = require("../models/ContactSchema");
 
 
 
-
 router.post("/add", async (req, res) => {
   let body = req.body;
   // let path = "../backend/csv/newsletter.csv";
