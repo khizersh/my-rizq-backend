@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  country: {
+    type: String,
+    require: true,
+  },
   freeUser: {
     type: Boolean,
     require: true,

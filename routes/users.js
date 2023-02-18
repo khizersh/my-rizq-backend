@@ -177,6 +177,38 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.post("/reset", async (req, res) => {
+  let body = req.body;
+  // let path = "../backend/csv/user.csv";
+
+  try {
+    if (body.email && body.password) {
+      const isExistEmail = await User.findOne({
+        email: body.email,
+      });
+
+      if (isExistEmail) {
+        isExistEmail.password = body.password;
+        await  isExistEmail.save();
+        res
+          .send({
+            status: "0000",
+            message: "Successfully login!",
+            data: isExistEmail,
+          })
+          .status(200);
+      } else {
+        res
+          .send({ status: "9999", message: "Invalid credentials!" })
+          .status(200);
+      }
+    }
+  } catch (error) {
+    console.log("error : ", error.message);
+    res.send({ status: 9999, message: "Something went wrong!" }).status(200);
+  }
+});
+
 router.post("/test", async (request, response) => {
   const user = new User(request.body);
 
