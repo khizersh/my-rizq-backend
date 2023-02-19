@@ -4,6 +4,7 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const Fs = require("fs");
 const CsvReadableStream = require("csv-reader");
 const User = require("../models/UserSchema");
+const { validateEmail } = require("../service/commonService");
 
 const path = "./csv/user.csv";
 
@@ -29,17 +30,22 @@ router.post("/signup", async (req, res) => {
   const request = new User(req.body[0]);
   //   // let path = "../backend/csv/user.csv";
 
-  console.log("request : ", request);
   try {
     const dbUser = await User.exists({ email: request.email });
 
     if (dbUser != null) {
       res.send({ status: 9999, message: "User already exist!" }).status(200);
     } else {
+      if (!validateEmail(request.email)) {
+        res
+          .send({ status: 9999, message: "Please Enter Valid Email" })
+          .status(200);
+      }
       await request.save();
       res.send({ status: 0000, message: "success" }).status(200);
     }
   } catch (error) {
+    console.log("error : ",error);
     res.send({ status: 9999, message: "Something went wrong!" }).status(200);
   }
 });
@@ -189,7 +195,7 @@ router.post("/reset", async (req, res) => {
 
       if (isExistEmail) {
         isExistEmail.password = body.password;
-        await  isExistEmail.save();
+        await isExistEmail.save();
         res
           .send({
             status: "0000",

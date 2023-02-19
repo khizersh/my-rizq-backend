@@ -4,6 +4,7 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const Fs = require("fs");
 const CsvReadableStream = require("csv-reader");
 const NewsletterModel = require("../models/NewsletterSchema");
+const { validateEmail } = require("../service/commonService");
 
 const path = "./csv/newsletter.csv";
 
@@ -26,8 +27,16 @@ router.post("/", async (req, res) => {
 
   try {
     const request = new NewsletterModel(req.body[0]);
-    await request.save();
-    res.send({ status: 0000, message: "success" }).status(200);
+
+    if (!validateEmail(request.email)) {
+      res
+        .send({ status: 9999, message: "Please Enter Valid Email" })
+        .status(200);
+    } else {
+      await request.save();
+      res.send({ status: 0000, message: "success" }).status(200);
+    }
+
     // read old data
     // let inputStream = Fs.createReadStream(path, "utf8");
 
