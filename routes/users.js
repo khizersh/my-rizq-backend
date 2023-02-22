@@ -45,7 +45,62 @@ router.post("/signup", async (req, res) => {
       res.send({ status: 0000, message: "success" }).status(200);
     }
   } catch (error) {
-    console.log("error : ",error);
+    console.log("error : ", error);
+    res.send({ status: 9999, message: "Something went wrong!" }).status(200);
+  }
+});
+
+router.post("/update-plan", async (req, res) => {
+  const request = new User(req.body);
+  //   // let path = "../backend/csv/user.csv";
+
+  try {
+    const dbUser = await User.findOne({ email: request.email });
+
+    if (dbUser != null) {
+      if (!validateEmail(request.email)) {
+        res
+          .send({ status: 9999, message: "Please Enter Valid Email" })
+          .status(200);
+      } else {
+        dbUser.freeUser = false;
+      }
+      const savedUser = await dbUser.save();
+      res
+        .send({ status: 0000, message: "success", data: savedUser })
+        .status(200);
+    } else {
+      res.send({ status: 9999, message: "User already exist!" }).status(200);
+    }
+  } catch (error) {
+    console.log("error : ", error);
+    res.send({ status: 9999, message: "Something went wrong!" }).status(200);
+  }
+});
+router.post("/cancel-plan", async (req, res) => {
+  const request = new User(req.body);
+  //   // let path = "../backend/csv/user.csv";
+
+  try {
+    const dbUser = await User.findOne({ email: request.email });
+
+    if (dbUser != null) {
+      if (!validateEmail(request.email)) {
+        res
+          .send({ status: 9999, message: "Please Enter Valid Email" })
+          .status(200);
+      } else {
+        dbUser.freeUser = true;
+      }
+      const savedUser = await dbUser.save();
+      res
+        .send({ status: 0000, message: "success", data: savedUser })
+        .status(200);
+    } else {
+      res.send({ status: 9999, message: "User already exist!" }).status(200);
+    }
+  } catch (error) {
+    console.log("error : ", error);
     res.send({ status: 9999, message: "Something went wrong!" }).status(200);
   }
 });
