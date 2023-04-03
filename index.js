@@ -20,9 +20,34 @@ const password = "4vdvfyz7HaCPInwW";
 const cluster = "<cluster name>";
 const dbname = "myRizq";
 
+const mongoUrl = `mongodb+srv://${username}:${password}@my-rizq.kpmalc8.mongodb.net/${dbname}?retryWrites=true&w=majority`;
+
+mongoose.set('strictQuery', false)
+// await mongoose.connect(
+//   mongoUrl,
+//   async(err)=>{
+//       if(err) throw err;
+//       console.log("conncted to db")
+//   }
+// )
+
+const connectDatabase = async () => {
+  try {
+    
+    await mongoose.connect(mongoUrl);
+    console.log("connected to database");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+connectDatabase();
+
+
 app.get("/", (req, res) => {
   res.send("Express app working");
 });
+
 
 app.use(cors());
 app.use(express.json());
@@ -41,16 +66,9 @@ app.use("/follow", FollowRoute);
 app.use("/stripe", StripeRoute);
 app.use("/contact", ContactRoute);
 
-const mongoUrl = `mongodb+srv://${username}:${password}@my-rizq.kpmalc8.mongodb.net/${dbname}?retryWrites=true&w=majority`;
 
-mongoose.set('strictQuery', false)
-mongoose.connect(
-  mongoUrl,
-  async(err)=>{
-      if(err) throw err;
-      console.log("conncted to db")
-  }
-)
+
+
 
 // mongoose.connect(mongoUrl, {
 //   useNewUrlParser: true,
