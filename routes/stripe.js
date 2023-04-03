@@ -18,7 +18,6 @@ router.post("/charge", async (req, res) => {
         payment_method: id,
         confirm: true,
       });
-      console.log("payment : ",payment);
       res.json({
         message: "Payment Successful",
         success: true,
