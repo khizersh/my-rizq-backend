@@ -5,6 +5,7 @@ const Fs = require("fs");
 const CsvReadableStream = require("csv-reader");
 var yahooFinance = require("yahoo-finance");
 const FollowModel = require("../models/FollowSchema");
+const yahooFinance2 = require("yahoo-finance2").default;
 
 const path = "./csv/follow.csv";
 
@@ -127,22 +128,29 @@ router.post("/get-data", async (req, res) => {
   // read old data
 
   try {
-    const data = await yahooFinance.quote(body.symbol, [
-      "financialData",
-      "summaryDetail",
-      "price",
-    ]);
+    console.log("CZAOA")
+    const data = await yahooFinance2.quoteSummary(body.symbol, {
+      modules: [
+        "financialData",
+        "summaryDetail",
+        "price",
+        "balanceSheetHistoryQuarterly",
+        "assetProfile"
+      ]
+    });
 
     let isShariah = false;
     let dep = parseFloat(
-      data.financialData.totalDebt / data.summaryDetail.marketCap
-    ).toFixed(2);
+      (data.financialData.totalDebt / data.summaryDetail.marketCap) * 100 
+    ).toFixed(0);
     let sec = parseFloat(
-      data.financialData.totalCash / data.summaryDetail.marketCap
-    ).toFixed(2);
+      (data.financialData.totalCash / data.summaryDetail.marketCap) * 100 
+    ).toFixed(0);
     let liq = parseFloat(
-      data.financialData.totalCash / data.summaryDetail.marketCap
-    ).toFixed(2);
+     ( data.balanceSheetHistoryQuarterly
+      .balanceSheetStatements[0].netReceivables / data.balanceSheetHistoryQuarterly
+      .balanceSheetStatements[0].totalAssets) * 100
+    ).toFixed(0);
 
     if (dep < 30 && sec < 30 && liq < 30) {
       isShariah = true;
