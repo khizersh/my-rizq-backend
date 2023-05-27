@@ -128,7 +128,6 @@ router.post("/get-data", async (req, res) => {
   // read old data
 
   try {
-    console.log("CZAOA")
     const data = await yahooFinance2.quoteSummary(body.symbol, {
       modules: [
         "financialData",
