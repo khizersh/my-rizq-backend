@@ -17,8 +17,8 @@ const cors = require("cors");
 
 const username = "myrizq3";
 const password = "4vdvfyz7HaCPInwW";
-const cluster = "<cluster name>";
 const dbname = "myRizq";
+const cluster = "<cluster name>";
 
 const mongoUrl = `mongodb+srv://${username}:${password}@my-rizq.kpmalc8.mongodb.net/${dbname}?retryWrites=true&w=majority`;
 // const mongoUrl = `mongodb://myrizq3:${password}@ac-8dq9cic-shard-00-00.kpmalc8.mongodb.net:27017,ac-8dq9cic-shard-00-01.kpmalc8.mongodb.net:27017,ac-8dq9cic-shard-00-02.kpmalc8.mongodb.net:27017/${dbname}?ssl=true&replicaSet=atlas-96rsyt-shard-0&authSource=admin&retryWrites=true&w=majority`;
