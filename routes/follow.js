@@ -82,7 +82,7 @@ router.post("/get-symbols", async (req, res) => {
   // let path = "../backend/csv/follow.csv";
 
   const follow = await FollowModel(req.body);
-
+  console.log("BACKEND",follow)
   try {
     const emails = await FollowModel.find({ email: follow.email });
     res.send({ status: 0000, message: "success", data: emails }).status(200);
